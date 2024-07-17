@@ -27,7 +27,9 @@ public class JoinService {
         if(result){
             return;
         }
-        User user = new User(null, username, password, "ROLE_ADMIN");
+        User user = new User(null, username, bCryptPasswordEncoder.encode(password), "ROLE_ADMIN");
+//        bCryptPasswordEncoder.encode(password) 비밀번호 암호화
+
         userRepository.save(user);
     }
 }
