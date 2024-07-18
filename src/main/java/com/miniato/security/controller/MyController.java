@@ -6,10 +6,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping
-public class UserController {
+public class MyController {
 
-    @GetMapping("user")
-    public String userController(){
-        return "userCon";
+    @GetMapping("/my")
+    public String myAPI(){
+        return "my";
     }
 }
