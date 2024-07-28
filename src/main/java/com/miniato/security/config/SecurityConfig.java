@@ -22,6 +22,7 @@ public class SecurityConfig {
     private final AuthenticationConfiguration authenticationConfiguration;
     private final JWTUtil jwtUtil;
 
+
     @Autowired
     public SecurityConfig(AuthenticationConfiguration authenticationConfiguration, JWTUtil jwtUtil){
         this.authenticationConfiguration = authenticationConfiguration;
