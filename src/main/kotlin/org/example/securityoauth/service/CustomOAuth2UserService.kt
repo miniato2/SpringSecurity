@@ -25,12 +25,10 @@ class CustomOAuth2UserService(
 
         val registrationId : String? = userRequest?.clientRegistration?.registrationId
 
-        println(oAuth2User.attributes["response"])
         val oAuth2Response = when (registrationId) {
             "naver" -> NaverResponse(oAuth2User.attributes)
             else -> throw OAuth2AuthenticationException("Unsupported provider: $registrationId")
         }
-        println("oAuth2Response" + oAuth2Response)
 
         val username = "${oAuth2Response.getProvider()} ${oAuth2Response.getProviderId()}"
 
@@ -47,8 +45,6 @@ class CustomOAuth2UserService(
 
             existsUser.email = oAuth2Response.getEmail()
             existsUser.name = oAuth2Response.getName()
-
-            println(existsUser)
 
             userRepository.save(existsUser)
 

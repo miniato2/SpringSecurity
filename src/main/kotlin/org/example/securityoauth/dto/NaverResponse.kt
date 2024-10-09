@@ -10,14 +10,14 @@ data class NaverResponse(private val attribute: MutableMap<String, Any>): OAuth2
     }
 
     override fun getProviderId(): String {
-        return attribute["id"].toString()
+        return responseAttribute["id"].toString()
     }
 
     override fun getEmail(): String {
-        return attribute["email"].toString()
+        return responseAttribute["email"].toString()
     }
 
     override fun getName(): String {
-        return attribute["name"].toString()
+        return responseAttribute["name"].toString()
     }
 }
