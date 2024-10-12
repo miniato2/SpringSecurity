@@ -10,8 +10,8 @@ import javax.crypto.SecretKey
 import javax.crypto.spec.SecretKeySpec
 
 @Component
-class JWTutil (
-    @Value("spring.jwt.secret")
+class JWTUtil (
+    @Value("\${spring.jwt.secret}")
     private val secret: String
 ){
     private val secretKey: SecretKey

@@ -4,13 +4,15 @@ import jakarta.servlet.http.Cookie
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.example.securityoauth.dto.CustomOAuth2User
-import org.example.securityoauth.jwt.JWTutil
+import org.example.securityoauth.jwt.JWTUtil
 import org.springframework.security.core.Authentication
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler
 import org.springframework.stereotype.Component
 
 @Component
-class CustomSuccessHandler(private val jwtUtil: JWTutil) : SimpleUrlAuthenticationSuccessHandler() {
+class CustomSuccessHandler(
+    private val jwtUtil: JWTUtil
+) : SimpleUrlAuthenticationSuccessHandler() {
 
     override fun onAuthenticationSuccess(
         request: HttpServletRequest?,
@@ -26,9 +28,10 @@ class CustomSuccessHandler(private val jwtUtil: JWTutil) : SimpleUrlAuthenticati
         val auth = iterator.next()
         val role = auth.authority
 
+        //토큰 생성
         val token = jwtUtil.createJwt(username, role, 60 * 60 * 60L) // **
 
-        response?.addCookie(createCookie("Authorization", token))
+        response?.addCookie(createCookie(key = "Authorization", value = token))
         response?.sendRedirect("http://localhost:3000/") // **
     }
 

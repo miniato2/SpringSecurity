@@ -1,5 +1,7 @@
 package org.example.securityoauth.config
 
+import org.example.securityoauth.auth.CustomSuccessHandler
+import org.example.securityoauth.jwt.JWTUtil
 import org.example.securityoauth.service.CustomOAuth2UserService
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -14,7 +16,9 @@ import org.springframework.security.config.http.SessionCreationPolicy
 @Configuration
 @EnableWebSecurity
 class SecurityConfig (
-    private val customOAuth2UserService: CustomOAuth2UserService
+    private val customOAuth2UserService: CustomOAuth2UserService,
+    private val customSuccessHandler: CustomSuccessHandler,
+    private val jwtUtil: JWTUtil
 ){
 
     @Bean
@@ -37,6 +41,7 @@ class SecurityConfig (
                 userInfoEndpoint {
                     customOAuth2UserService
                 }
+                authenticationSuccessHandler = customSuccessHandler
             }
 
             sessionManagement {
