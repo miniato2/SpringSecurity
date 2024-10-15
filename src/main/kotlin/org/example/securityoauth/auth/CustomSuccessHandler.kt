@@ -5,13 +5,16 @@ import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.example.securityoauth.dto.CustomOAuth2User
 import org.example.securityoauth.jwt.JWTUtil
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.security.core.Authentication
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler
 import org.springframework.stereotype.Component
 
 @Component
 class CustomSuccessHandler(
-    private val jwtUtil: JWTUtil
+    private val jwtUtil: JWTUtil,
+    @Value("\${spring.jwt.accessTokenExpirationTime}")
+    private val accessTokenExpirationTime : String
 ) : SimpleUrlAuthenticationSuccessHandler() {
 
     override fun onAuthenticationSuccess(
