@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component
 class CustomSuccessHandler(
     private val jwtUtil: JWTUtil,
     @Value("\${spring.jwt.accessTokenExpirationTime}")
-    private val accessTokenExpirationTime : String
+    private val accessTokenExpirationTime : Long
 ) : SimpleUrlAuthenticationSuccessHandler() {
 
     override fun onAuthenticationSuccess(
@@ -32,7 +32,7 @@ class CustomSuccessHandler(
         val role = auth.authority
 
         //토큰 생성
-        val token = jwtUtil.createJwt(username, role, 60 * 60 * 60L) // **
+        val token = jwtUtil.createJwt(username, role, accessTokenExpirationTime) // **
 
         response?.addCookie(createCookie(key = "Authorization", value = token))
         response?.sendRedirect("http://localhost:3000/") // **
