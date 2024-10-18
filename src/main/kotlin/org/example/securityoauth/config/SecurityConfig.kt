@@ -1,6 +1,5 @@
 package org.example.securityoauth.config
 
-import jakarta.servlet.http.HttpServletRequest
 import org.example.securityoauth.auth.CustomSuccessHandler
 import org.example.securityoauth.jwt.JWTFilter
 import org.example.securityoauth.jwt.JWTUtil
@@ -14,6 +13,7 @@ import org.springframework.security.web.SecurityFilterChain
 // kotlin dsl을 사용하기 위해서 명시적인 import가 필요하다.
 import org.springframework.security.config.annotation.web.invoke
 import org.springframework.security.config.http.SessionCreationPolicy
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 import org.springframework.web.cors.CorsConfiguration
 import org.springframework.web.cors.CorsConfigurationSource
 
@@ -51,7 +51,8 @@ class SecurityConfig (
             }
 
             //필터 추가
-            addFilterBefore<JWTFilter>(JWTFilter(jwtUtil))
+            //JWTFilter는 모든 요청에 대해 UsernamePasswordAuthenticationFilter가 실행되기 전에 실행된다.
+            addFilterBefore<UsernamePasswordAuthenticationFilter>(JWTFilter(jwtUtil))
 
             cors {
                 configurationSource = CorsConfigurationSource{
