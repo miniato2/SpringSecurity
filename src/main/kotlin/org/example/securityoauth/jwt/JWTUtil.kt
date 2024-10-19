@@ -20,6 +20,16 @@ class JWTUtil (
         secretKey = SecretKeySpec(secret.toByteArray(StandardCharsets.UTF_8), Keys.hmacShaKeyFor(secret.toByteArray()).algorithm)
     }
 
+    fun getCategory(token: String?): String {
+
+        return Jwts.parserBuilder()
+            .setSigningKey(secretKey)
+            .build()
+            .parseClaimsJws(token)
+            .body
+            .get("category", String::class.java)
+    }
+
     fun getUsername(token: String?): String {
         return Jwts.parserBuilder()
             .setSigningKey(secretKey)
@@ -47,8 +57,9 @@ class JWTUtil (
             .expiration.before(Date())
     }
 
-    fun createJwt(username: String, role: String, expiredMs: Long): String{
+    fun createJwt(category: String, username: String, role: String, expiredMs: Long): String{
         return Jwts.builder()
+            .claim("category", category)
             .claim("username", username)
             .claim("role", role)
             .setIssuedAt(Date(System.currentTimeMillis()))

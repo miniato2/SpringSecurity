@@ -1,5 +1,6 @@
 package org.example.securityoauth.jwt
 
+import io.jsonwebtoken.ExpiredJwtException
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -19,35 +20,58 @@ class JWTFilter(
     ) {
 
         //쿠키에서 JWT 추출
-        var authorization: String? = null
-        val cookies = request.cookies
+//        var authorization: String? = null
+//        val cookies = request.cookies
+//
+//        cookies?.let {
+//            for (cookie in it) {
+//                println(cookie.name)
+//                if (cookie.name == "access") {
+//                    authorization = cookie.value
+//                }
+//            }
+//        }
 
-        cookies?.let {
-            for (cookie in it) {
-                println(cookie.name)
-                if (cookie.name == "Authorization") {
-                    authorization = cookie.value
-                }
-            }
-        }
+        val accessToken = request.getHeader("access")
+        println("access token ============" + accessToken)
 
         //인증이 필요하지 않은 요청에 대해서는 다음필터로 넘겨줌
-        if(authorization == null){
+        if(accessToken == null){
             filterChain.doFilter(request, response)
             return
         }
 
-        //왜 굳이 다시 token이름으로 넣는지?
-        val token = authorization
 
         //토큰 만료시간 검증
-        if(jwtUtil.isExpired(token)){
+        if(jwtUtil.isExpired(accessToken)){
             filterChain.doFilter(request, response)
             return
         }
 
-        val username = jwtUtil.getUsername(token)
-        val role = jwtUtil.getRole(token)
+        //토큰 만료시
+        try{
+            jwtUtil.isExpired(accessToken)
+        }catch (e : ExpiredJwtException){
+            val writer = response.writer
+            writer.print("invalid access token");
+
+            response.status = HttpServletResponse.SC_UNAUTHORIZED
+            return
+        }
+
+        //토큰 access 인지 확인(발급시 페이로드에 명시)
+        val category: String = jwtUtil.getCategory(accessToken)
+
+        if(!category.equals("access")) {
+            val writer = response.writer
+            writer.print("invalid access token")
+
+            response.status = HttpServletResponse.SC_UNAUTHORIZED
+            return
+        }
+
+        val username = jwtUtil.getUsername(accessToken)
+        val role = jwtUtil.getRole(accessToken)
 
         val userDTO = UserDTO(username = username, role = role)
         val customOAuth2User = CustomOAuth2User(userDTO)
