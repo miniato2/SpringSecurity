@@ -46,7 +46,7 @@ class CustomSuccessHandler(
         val cookie = Cookie(key, value)
         cookie.maxAge = 24 * 60 * 60
         // cookie.isSecure = true
-//        cookie.path = "/"
+        cookie.path = "/"
         cookie.isHttpOnly = true
         return cookie
     }

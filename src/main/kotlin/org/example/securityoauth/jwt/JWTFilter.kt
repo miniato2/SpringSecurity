@@ -43,10 +43,10 @@ class JWTFilter(
 
 
         //토큰 만료시간 검증
-        if(jwtUtil.isExpired(accessToken)){
-            filterChain.doFilter(request, response)
-            return
-        }
+//        if(jwtUtil.isExpired(accessToken)){
+//            filterChain.doFilter(request, response)
+//            return
+//        }
 
         //토큰 만료시
         try{
@@ -63,6 +63,7 @@ class JWTFilter(
         val category: String = jwtUtil.getCategory(accessToken)
 
         if(!category.equals("access")) {
+            //http 응답 body에 메세지 작성하기 위함
             val writer = response.writer
             writer.print("invalid access token")
 
