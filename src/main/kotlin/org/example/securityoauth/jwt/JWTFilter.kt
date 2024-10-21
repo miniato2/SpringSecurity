@@ -33,7 +33,6 @@ class JWTFilter(
 //        }
 
         val accessToken = request.getHeader("access")
-        println("access token ============" + accessToken)
 
         //인증이 필요하지 않은 요청에 대해서는 다음필터로 넘겨줌
         if(accessToken == null){
