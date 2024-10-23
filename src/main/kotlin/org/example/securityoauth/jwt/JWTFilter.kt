@@ -32,6 +32,8 @@ class JWTFilter(
 //            }
 //        }
 
+        //여기서는 request header에서 꺼내고
+        //reissue 에서 refresh는 cookie에서 꺼내는 이유?
         val accessToken = request.getHeader("access")
 
         //인증이 필요하지 않은 요청에 대해서는 다음필터로 넘겨줌

@@ -18,13 +18,16 @@ class ReissueController (
 
     @PostMapping
     fun reissue(request: HttpServletRequest, response: HttpServletResponse) : ResponseEntity<Any> {
-//        var refresh : String
-//        val cookies: Array<Cookie> = request.cookies
-//        for (cookie in cookies) {
-//            if (cookie.getName().equals("refresh")) {
-//                refresh = cookie.getValue()
-//            }
-//        }
+        var refresh : String? = null
+        val cookies = request.cookies
+
+        cookies?.let {
+            for(cookie in it){
+                if(cookie.name == "refresh"){
+                    refresh = cookie.value
+                }
+            }
+        }
 
 
         return ResponseEntity(HttpStatus.OK)
