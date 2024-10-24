@@ -39,6 +39,7 @@ class SecurityConfig (
                 authorize("/", permitAll)
                 authorize("/login", permitAll)
                 authorize("/signup", permitAll)
+                authorize("/reissue", permitAll)
                 authorize(anyRequest, authenticated)
             }
 
