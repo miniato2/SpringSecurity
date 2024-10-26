@@ -60,6 +60,7 @@ class ReissueController (
         refreshRepository.deleteByRefresh(refresh)
         addRefreshToken(username, newRefresh, refreshTokenExpirationTime)
 
+        //헤더에 access, 쿠키에 refresh 저장??
         response.setHeader("access", newAccess)
         response.addCookie(createCookie("refresh", newRefresh))
 
