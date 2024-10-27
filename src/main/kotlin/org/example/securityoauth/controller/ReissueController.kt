@@ -61,6 +61,7 @@ class ReissueController (
         addRefreshToken(username, newRefresh, refreshTokenExpirationTime)
 
         //헤더에 access, 쿠키에 refresh 저장??
+        //보안과 편의성 때문,
         response.setHeader("access", newAccess)
         response.addCookie(createCookie("refresh", newRefresh))
 
