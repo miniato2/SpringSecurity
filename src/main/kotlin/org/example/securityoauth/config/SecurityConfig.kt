@@ -1,8 +1,10 @@
 package org.example.securityoauth.config
 
 import org.example.securityoauth.auth.CustomSuccessHandler
+import org.example.securityoauth.jwt.CustomLogOutFilter
 import org.example.securityoauth.jwt.JWTFilter
 import org.example.securityoauth.jwt.JWTUtil
+import org.example.securityoauth.repository.RefreshRepository
 import org.example.securityoauth.service.CustomOAuth2UserService
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -14,6 +16,7 @@ import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.config.annotation.web.invoke
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
+import org.springframework.security.web.authentication.logout.LogoutFilter
 import org.springframework.web.cors.CorsConfiguration
 import org.springframework.web.cors.CorsConfigurationSource
 
@@ -22,7 +25,8 @@ import org.springframework.web.cors.CorsConfigurationSource
 class SecurityConfig (
     private val customOAuth2UserService: CustomOAuth2UserService,
     private val customSuccessHandler: CustomSuccessHandler,
-    private val jwtUtil: JWTUtil
+    private val jwtUtil: JWTUtil,
+    private val refreshRepository: RefreshRepository
 ){
 
     @Bean
@@ -54,6 +58,9 @@ class SecurityConfig (
             //필터 추가
             //JWTFilter는 모든 요청에 대해 UsernamePasswordAuthenticationFilter가 실행되기 전에 실행된다.
             addFilterBefore<UsernamePasswordAuthenticationFilter>(JWTFilter(jwtUtil))
+
+            //LogOut
+            addFilterBefore<LogoutFilter>(CustomLogOutFilter(jwtUtil, refreshRepository))
 
             cors {
                 configurationSource = CorsConfigurationSource{
