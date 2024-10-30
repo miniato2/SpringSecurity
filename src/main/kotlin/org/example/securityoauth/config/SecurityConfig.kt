@@ -70,7 +70,6 @@ class SecurityConfig (
                             allowCredentials = true // 자격 증명을 포함하는 요청 허용
                             allowedHeaders = listOf("*") // 모든 헤더 허용
                             maxAge = 3600L // 최대 캐시 시간 (초) = cors 요청의 유효기간
-
                             exposedHeaders = listOf("Set-Cookie", "Authorization") // 클라이언트가 접근할 수 있는 헤더
                     }
                 }
